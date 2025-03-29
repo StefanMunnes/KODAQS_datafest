@@ -1,7 +1,7 @@
 data_municipal <- readr::read_csv("data/municipal/municipal_main.csv")
 
-data_pks_2020 <- readr::read_delim(
-  "data/pks/KR-F-01-T01-Kreise-Faelle-HZ_csv.csv",
+data_pks_2022 <- readr::read_delim(
+  "data/pks/2022/KR-F-01-T01-Kreise-Faelle-HZ_csv.csv",
   delim = ";",
   skip = 1,
   na = c("", "NA", "------"),
