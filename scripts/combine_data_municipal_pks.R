@@ -4,6 +4,9 @@ library(stringr)
 # get rid of exponential notation (problem as character)
 options(scipen = 100)
 
+source("scripts/functions.R")
+
+
 # load data
 source("scripts/load_data.R")
 
@@ -22,21 +25,19 @@ data_municipal_aggr <- data_municipal |>
     across(
       c(
         pop20_MEAN,
-        bs20_MEAN,
         lupp20_MEAN,
         mean_FLAT_size_2022,
-        livespace_MEAN_grid_2022,
         vac_MEAN_muni_2022,
         Rent_m2_EUR_2022,
         share_larger_HH_2022,
-        share_big_WHG_2022,
         POP_60_plus_._2022,
         change_pc_bs_mean,
         st_einnkr,
       ),
       ~ mean(.x, na.rm = TRUE)
     )
-  )
+  ) |>
+  mutate(st_einnkr = top_code_income(st_einnkr))
 
 
 # merge aggregated municipal data with PKS violent data (filter for Schluessel)
