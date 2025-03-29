@@ -13,7 +13,7 @@ data_municipal_short <- data_municipal |>
   group_by(AGS_short) |>
   summarize(
     gemeinden_n = n(),
-    pop_20_sum = sum(pop_20),
+    pop_20_sum = sum(pop_20, na.rm = TRUE),
     across(
       c(
         pop20_MEDIAN,
@@ -42,7 +42,10 @@ data_pks_2020 <- data_pks_2020 |>
 
 
 data_kreis_pks_2020 <- data_pks_2020 |>
-  full_join(data_municipal_short, by = c("gemeindeschluessel" = "AGS_short")) |>
+  right_join(
+    data_municipal_short,
+    by = c("gemeindeschluessel" = "AGS_short")
+  ) |>
   mutate(across(where(is.numeric), \(x) round(x, digits = 4)))
 
 
