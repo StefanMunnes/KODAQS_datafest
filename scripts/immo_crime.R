@@ -173,5 +173,5 @@ df_finish <- immo_merged %>%
 m1 <- lm(Aufklaerungsquote ~ kaufpreis + zustand_old_p + baujahr_kat_p + mittelwert_preis, data = df_finish)
 summary(m1)
 
-test <- lmer(Aufklaerungsquote ~ 1 + (1 | kid2019), data = immo_merged)  # als multi-level Modell
+test <- lmer(Aufklaerungsquote ~ kaufpreis + zustand_old_p + baujahr_kat_p + (1 | kid2019), data = immo_merged)  # als multi-level Modell
 
