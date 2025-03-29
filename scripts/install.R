@@ -1,0 +1,11 @@
+install.packages(
+  c(
+    "dplyr",
+    "reader",
+    "stringr",
+    "ggplot2",
+    "cluster",
+    "janitor",
+    "sf"
+  )
+)
