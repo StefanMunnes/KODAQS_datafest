@@ -13,6 +13,7 @@ data_municipal_short <- data_municipal |>
   group_by(AGS_short) |>
   summarize(
     gemeinden_n = n(),
+    pop_20_sum = sum(pop_20),
     across(
       c(
         pop20_MEDIAN,
@@ -32,17 +33,13 @@ data_municipal_short <- data_municipal |>
         change_pc_income_tax_pp,
       ),
       ~ mean(.x, na.rm = TRUE)
-    ),
-    across(
-      pop_20,
-      ~ sum(.x)
     )
   )
 
 # prepate pks criminal data (keep just violent crime)
 data_pks_2020 <- data_pks_2020 |>
-  filter(Schluessel == "892000") 
+  filter(schluessel == "892000")
 
 
 data_kreis_pks_2020 <- data_pks_2020 |>
-  semi_join(data_municipal_short, by = c("Gemeindeschluessel" = "AGS_short"))
+  full_join(data_municipal_short, by = c("gemeindeschluessel" = "AGS_short"))
