@@ -21,11 +21,9 @@ data_municipal_aggr <- data_municipal |>
   group_by(AGS_short) |>
   summarize(
     gemeinden_n = n(),
-    pop_20_sum = sum(pop_20, na.rm = TRUE),
     across(
       c(
         pop20_MEAN,
-        lupp20_MEAN,
         mean_FLAT_size_2022,
         vac_MEAN_muni_2022,
         Rent_m2_EUR_2022,
@@ -37,7 +35,8 @@ data_municipal_aggr <- data_municipal |>
       ~ mean(.x, na.rm = TRUE)
     )
   ) |>
-  mutate(st_einnkr = top_code_income(st_einnkr))
+  mutate(st_einnkr = top_code_income(st_einnkr)) |>
+  filter(!is.infinite(change_pc_bs_mean))
 
 
 # merge aggregated municipal data with PKS violent data (filter for Schluessel)

@@ -20,3 +20,8 @@ data_taxpower_2022 <- readxl::read_xlsx(
 ) |>
   select(GKZ1222, st_einnkr) |>
   mutate(st_einnkr = na_if(st_einnkr, -9999))
+
+
+# Shape files for Germany on Kreis level
+data_shapefile <- st_read("data/shapefiles/EPSG_25832/VG250_KRS.shp") |>
+  filter(row_number() == 1, .by = AGS)
