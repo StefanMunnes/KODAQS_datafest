@@ -9,6 +9,7 @@ source("scripts/load_data.R")
 
 # aggregate municipal data on "kreis" level (create mean/sum values forgemeinden)
 data_municipal_aggr <- data_municipal |>
+  full_join(data_taxpower_2022, by = c("AGS" = "GKZ1222")) |>
   filter(!is.na(AGS)) |>
   mutate(
     AGS_short = str_remove(as.character(AGS), "[0-9]{3,3}$") |> as.numeric(),
@@ -31,17 +32,16 @@ data_municipal_aggr <- data_municipal |>
         share_big_WHG_2022,
         POP_60_plus_._2022,
         change_pc_bs_mean,
+        st_einnkr,
       ),
       ~ mean(.x, na.rm = TRUE)
     )
   )
 
-# prepate pks criminal data (keep just violent crime)
-data_pks_violents_2022 <- data_pks_2022 |>
-  filter(schluessel == "892000")
 
-
+# merge aggregated municipal data with PKS violent data (filter for Schluessel)
 data_kreis_pks_2022 <- data_pks_violents_2022 |>
+  filter(schluessel == "892000") |>
   right_join(
     data_municipal_aggr,
     by = c("gemeindeschluessel" = "AGS_short")
