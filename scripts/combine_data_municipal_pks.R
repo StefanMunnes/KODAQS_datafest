@@ -42,4 +42,12 @@ data_pks_2020 <- data_pks_2020 |>
 
 
 data_kreis_pks_2020 <- data_pks_2020 |>
-  full_join(data_municipal_short, by = c("gemeindeschluessel" = "AGS_short"))
+  full_join(data_municipal_short, by = c("gemeindeschluessel" = "AGS_short")) |>
+  mutate(across(where(is.numeric), \(x) round(x, digits = 4)))
+
+
+write.csv(
+  data_kreis_pks_2020,
+  "data/data_kreis_pks_2020.csv",
+  row.names = FALSE
+)
