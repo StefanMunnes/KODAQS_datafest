@@ -21,12 +21,12 @@ Stefan Munnes
 
 
 ## Crime rate (violence) in Germany
-![crimerate](plot_map_crimerate.png)
+![crimerate](output/plot_map_crimerate.png)
 Source: [PKS 2022](https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/PKS2022/PKSTabellen/KreisFalltabellen/kreisfalltabellen.html?nn=211724)
 
 ## Regional clusters in Germany
-![germany map cluster](plot_cluster_map.png)
+![germany map cluster](output/plot_cluster_map.png)
 
-![cluster by variable](plot_cluster_vars.png)
+![cluster by variable](output/plot_cluster_vars.png)
 
 ## 
