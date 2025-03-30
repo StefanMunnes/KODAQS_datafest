@@ -75,11 +75,11 @@ modelsummary(list(m2_0,m2_1),
 
 # Plot
 model_data <- bind_rows(
-  tidy(m2_0) %>% mutate(Model = "Model 1: Only Clusters (R²: 45 %)"),
-  tidy(m2_1) %>% mutate(Model = "Model 2: Full (R²: 63.6 %)")) %>%
+  tidy(m2_0) %>% mutate(Model = "Model 1 "), #(R²: 45 %)
+  tidy(m2_1) %>% mutate(Model = "Model 2 ")) %>% #(R²: 63.6 %)
   filter(term != "(Intercept)")  # Intercept ausblenden
 
-coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), color = Model)) +
+coef_m2_1 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), color = Model)) +
   geom_point(size = 3, shape= 16, position = position_dodge(width = 0.5)) +
   geom_errorbarh(aes(xmin = estimate - 1.96 * std.error, 
                      xmax = estimate + 1.96 * std.error), 
@@ -88,19 +88,23 @@ coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), col
   theme_minimal() + 
   theme(legend.position = "bottom",
         axis.text.y = element_text(size = 15)) +
-  scale_y_discrete(labels = c("mean_FLAT_size_2022" = "flatsize 22 (mean)",
+  scale_y_discrete(labels = c("mean_FLAT_size_2022" = "Flat size in m2",
                               "change_pc_bs_mean" = "Built-up area change in % ('05–'20)",
-                              "POP_60_plus_._2022"= "Old population",
-                              "pop20_MEAN" = "pop_20 (mean)",
-                              "Rent_m2_EUR_2022" = "Rent/m2 22 (€)",
-                              "st_einnkr" = "tax/capita 22 (€)",
-                              "vac_MEAN_muni_2022" = "vacancy rate/municipality (mean)",
+                              "POP_60_plus_._2022"= "Population age 60+",
+                              "pop20_MEAN" = "Mean population",
+                              "Rent_m2_EUR_2022" = "Rent per m² in €",
+                              "st_einnkr" = "Tax revenue per capita in €",
+                              "vac_MEAN_muni_2022" = "Vacancy rate per district",
                               "cluster1" = "Cluster 1",
                               "cluster2" = "Cluster 2",
                               "cluster3" = "Cluster 3",
                               "cluster4" = "Cluster 4"))+
   labs(x = "estimates (95% CI)", y = NULL)
-ggsave("graph/coef_m2.png", width = 6, height = 4, dpi = 300)
+ggsave("graph/coef_m2_1.png", width = 6, height = 4, dpi = 300)
+
+
+
+
 
 
 
@@ -111,7 +115,7 @@ model <- list("Only Clusters" = m2_0,
 
 lab_vars <- c(
   "(Intercept)" = "Intercept",
-  "pop20_MEAN" = "Mean population ",
+  "pop20_MEAN" = "Mean population",
   "mean_FLAT_size_2022" = "Flat size in m2",
   "vac_MEAN_muni_2022" = "Vacancy rate per district ",
   "Rent_m2_EUR_2022" = "Rent per m² in € ",
@@ -123,6 +127,18 @@ lab_vars <- c(
   "cluster3" = "Cluster 3: Growing,\nspacious, rural family areas",
   "cluster4" = "Cluster 4: Wealthy,\nyoung, dense urban cores"
 )
+
+"mean_FLAT_size_2022" = "Flat size in m2",
+"change_pc_bs_mean" = "Built-up area change in % ('05–'20)",
+"POP_60_plus_._2022"= "Population age 60+",
+"Rent_m2_EUR_2022" = "Rent per m² in €",
+"st_einnkr" = "Tax revenue per capita in €",
+"vac_MEAN_muni_2022" = "Vacancy rate per district",
+"cluster1" = "Cluster 1",
+"cluster2" = "Cluster 2",
+"cluster3" = "Cluster 3",
+"cluster4" = "Cluster 4"
+
 
 regtab <- modelsummary(model, 
              coef_map = lab_vars,
