@@ -1,3 +1,7 @@
+library(dplyr)
+library(ggplot2)
+
+
 data_analysis <- read.csv("data/data_kreis_pks_2022_cluster.csv") |>
   select(haeufigkeitszahl, all_of(varlist_analysis), cluster) |>
   mutate(
