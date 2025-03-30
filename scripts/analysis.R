@@ -86,7 +86,8 @@ coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), col
                  height = 0.2, position = position_dodge(width = 0.5)) +
   geom_vline(xintercept= 0, linetype = "dotted", color = "dark grey")+
   theme_minimal() + 
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 15)) +
   scale_y_discrete(labels = c("mean_FLAT_size_2022" = "flatsize 22 (mean)",
                               "change_pc_bs_mean" = "Built-up area change in % ('05–'20)",
                               "POP_60_plus_._2022"= "Old population",
@@ -98,8 +99,8 @@ coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), col
                               "cluster2" = "Cluster 2",
                               "cluster3" = "Cluster 3",
                               "cluster4" = "Cluster 4"))+
-  labs(x = "estimates (95% CI)", y = "predictors")
-ggsave("graph/coef_m2.png", width = 8, height = 6, dpi = 300)
+  labs(x = "estimates (95% CI)", y = NULL)
+ggsave("graph/coef_m2.png", width = 6, height = 4, dpi = 300)
 
 
 
