@@ -1,18 +1,23 @@
 install.packages(
   c(
     "dplyr",
-    "reader",
+    "readr",
+    "readxl",
+    "tidyr",
     "stringr",
+    "reshape2",
     "ggplot2",
     "cluster",
     "janitor",
     "sf",
     "broom",
-    "ggplot2",
     "ggfortify",
+    "factoextra",
+    "GGally",
     "texreg",
     "modelsummary",
     "pandoc"
   )
 )
 
+devtools::install_github("wilkelab/ungeviz")
