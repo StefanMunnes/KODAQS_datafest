@@ -6,6 +6,13 @@ install.packages(
     "ggplot2",
     "cluster",
     "janitor",
-    "sf"
+    "sf",
+    "broom",
+    "ggplot2",
+    "ggfortify",
+    "texreg",
+    "modelsummary",
+    "pandoc"
   )
 )
+
