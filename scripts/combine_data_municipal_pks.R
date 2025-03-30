@@ -4,7 +4,7 @@ library(stringr)
 # get rid of exponential notation (problem as character)
 options(scipen = 100)
 
-source("scripts/functions.R")
+source("scripts/misc.R")
 
 
 # load data
@@ -17,6 +17,13 @@ data_municipal_aggr <- data_municipal |>
   mutate(
     AGS_short = str_remove(as.character(AGS), "[0-9]{3,3}$") |> as.numeric(),
     .after = AGS
+  ) |>
+  mutate(
+    change_pc_bs_mean = ifelse(
+      is.infinite(change_pc_bs_mean),
+      NA,
+      change_pc_bs_mean
+    )
   ) |>
   group_by(AGS_short) |>
   summarize(
@@ -35,12 +42,11 @@ data_municipal_aggr <- data_municipal |>
       ~ mean(.x, na.rm = TRUE)
     )
   ) |>
-  mutate(st_einnkr = top_code_income(st_einnkr)) |>
-  filter(!is.infinite(change_pc_bs_mean))
+  mutate(st_einnkr = top_code_income(st_einnkr))
 
 
-# merge aggregated municipal data with PKS violent data (filter for Schluessel)
-data_kreis_pks_2022 <- data_pks_violents_2022 |>
+# merge aggregated municipal data with PKS violent data (filter by Schluessel)
+data_kreis_pks_2022 <- data_pks_2022 |>
   filter(schluessel == "892000") |>
   right_join(
     data_municipal_aggr,
