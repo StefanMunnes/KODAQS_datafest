@@ -8,7 +8,7 @@ data_pks_2022 <- readr::read_delim(
   delim = ";",
   skip = 1,
   na = c("", "NA", "------"),
-  locale = locale(encoding = "Latin1")
+  locale = readr::locale(encoding = "Latin1")
 ) |>
   janitor::clean_names()
 
@@ -23,5 +23,5 @@ data_taxpower_2022 <- readxl::read_xlsx(
 
 
 # Shape files for Germany on Kreis level
-data_shapefile <- st_read("data/shapefiles/EPSG_25832/VG250_KRS.shp") |>
+data_shapefile <- sf::st_read("data/shapefiles/EPSG_25832/VG250_KRS.shp") |>
   filter(row_number() == 1, .by = AGS)
