@@ -100,7 +100,7 @@ coef_m2_1 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), c
                               "cluster3" = "Cluster 3",
                               "cluster4" = "Cluster 4"))+
   labs(x = "estimates (95% CI)", y = NULL)
-ggsave("graph/coef_m2_1.png", width = 6, height = 4, dpi = 300)
+ggsave("output/coef_m2_1.png", width = 6, height = 4, dpi = 300)
 
 
 
@@ -128,22 +128,9 @@ lab_vars <- c(
   "cluster4" = "Cluster 4: Wealthy,\nyoung, dense urban cores"
 )
 
-"mean_FLAT_size_2022" = "Flat size in m2",
-"change_pc_bs_mean" = "Built-up area change in % ('05–'20)",
-"POP_60_plus_._2022"= "Population age 60+",
-"Rent_m2_EUR_2022" = "Rent per m² in €",
-"st_einnkr" = "Tax revenue per capita in €",
-"vac_MEAN_muni_2022" = "Vacancy rate per district",
-"cluster1" = "Cluster 1",
-"cluster2" = "Cluster 2",
-"cluster3" = "Cluster 3",
-"cluster4" = "Cluster 4"
-
-
 regtab <- modelsummary(model, 
              coef_map = lab_vars,
              output = "flextable",
              gof_omit = "IC|F|L",stars = T)
 regtab2 <- autofit(regtab)
-save_as_docx(regtab2,path = "tables/regressionstabelle.docx")
-
+save_as_docx(regtab2,path = "output/regressionstabelle.docx")
