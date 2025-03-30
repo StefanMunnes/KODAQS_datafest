@@ -13,7 +13,7 @@ source("scripts/load_data.R")
 
 # prepare analysis data
 data_cluster <- read.csv("data/data_kreis_pks_2022_cluster.csv") |>
-  # select(all_of(varlist_analysis), cluster) |>
+  select(all_of(varlist_analysis), cluster) |>
   mutate(
     cluster = factor(
       as.character(cluster),
@@ -33,11 +33,20 @@ data_map <- data_shapefile |>
   )
 
 # Plot the map
-ggplot(data_map) +
+plot_map_cluster <- ggplot(data_map) +
   geom_sf(aes(fill = cluster), color = "#747474", size = 0.02) +
   scale_fill_manual(values = clr_cluster, na.value = "grey50") +
-  theme_minimal() # +
-# theme(legend.position = "none")
+  theme_minimal() +
+  theme(legend.position = "none")
+
+ggsave(
+  "output/plot_cluster_map.png",
+  plot_map_cluster,
+  width = 10,
+  height = 10,
+  dpi = 300
+)
+
 
 # ---- 2. Cluster by variables ----
 
@@ -49,7 +58,7 @@ cluster_means <- data_cluster |>
   tidyr::pivot_longer(-cluster, names_to = "variable", values_to = "value")
 
 
-data_cluster |>
+plot_cluster_vars <- data_cluster |>
   # top-code variable for better visualization
   mutate(
     change_pc_bs_mean = ifelse(change_pc_bs_mean >= 25, 25, change_pc_bs_mean)
@@ -58,16 +67,16 @@ data_cluster |>
     columns = 1:(ncol(data_cluster) - 1),
     groupColumn = "cluster",
     scale = "std",
-    alphaLines = 0.3
+    alphaLines = 0.25
   ) +
+  geom_hline(yintercept = 0, color = "grey20") +
   ungeviz::geom_hpline(
     data = cluster_means,
     aes(x = variable, y = value, colour = cluster),
-    alpha = 1,
+    alpha = 0.9,
     size = 3,
     inherit.aes = FALSE
   ) +
-  geom_hline(yintercept = 0, color = "grey20") +
   coord_flip() +
   scale_x_discrete(labels = lab_vars) +
   scale_color_manual(values = clr_cluster) +
@@ -75,22 +84,34 @@ data_cluster |>
     y = "Scaled values",
     x = ""
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.y = element_text(size = 12))
+
+
+ggsave(
+  "output/plot_cluster_vars.png",
+  plot_cluster_vars,
+  width = 7,
+  height = 6,
+  dpi = 300
+)
 
 
 # ---- 3. Legend ----
 
 legend <- get_legend(
-  ggplot(data_cluster, aes(x, y, color = cluster)) +
-    geom_line() +
-    theme(legend.position = "right")
+  ggplot(data_cluster, aes(st_einnkr, fill = cluster)) +
+    geom_bar() +
+    scale_fill_manual(values = clr_cluster) +
+    theme(legend.position = "right", legend.title = element_blank())
 )
 
+ggsave(
+  "output/plot_cluster_legend.png",
+  legend,
+  width = 12,
+  height = 6,
+  dpi = 300
+)
 
 # ---- 4. Combine plots and with legend ----
-
-combined <- plot_grid(p1, p2, ncol = 2, rel_widths = c(1, 1), align = 'h')
-final_plot <- plot_grid(combined, legend, rel_widths = c(2, 0.3), ncol = 2)
-
-
-ggsave("graph/cluster_plots.png", final_plot, width = 12, height = 6, dpi = 300)
