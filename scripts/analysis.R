@@ -59,7 +59,8 @@ ggsave("graph/coef_m1.png", width = 8, height = 6, dpi = 300)
 
 ##### Regressions including clusters  ------------------------------------------
 table(data_kreis_pks_2022_cluster$cluster)
-data_kreis_pks_2022_cluster$cluster <- as.character(data_kreis_pks_2022_cluster$cluster)
+data_kreis_pks_2022_cluster$cluster <- as.factor(data_kreis_pks_2022_cluster$cluster)
+data_kreis_pks_2022_cluster$cluster <- relevel(data_kreis_pks_2022_cluster$cluster, ref = "2")
 
 m2_0 <- lm(haeufigkeitszahl ~ 
            cluster,
@@ -71,29 +72,19 @@ m2_1 <- lm(haeufigkeitszahl ~
            mean_FLAT_size_2022 +
            vac_MEAN_muni_2022 + 
            st_einnkr + 
-           Rent_m2_EUR_2022 + 
-           POP_60_plus_._2022, 
+           Rent_m2_EUR_2022 +
+           POP_60_plus_._2022+
+           change_pc_bs_mean, 
            data = data_kreis_pks_2022_cluster)
 
-m2_2 <- lm(haeufigkeitszahl ~
-           pop20_MEAN +
-           mean_FLAT_size_2022 +
-           vac_MEAN_muni_2022 + 
-           st_einnkr + 
-           Rent_m2_EUR_2022 + 
-           POP_60_plus_._2022 +
-           cluster,
-           data = data_kreis_pks_2022_cluster)
-
-modelsummary(list(m2_0,m2_1,m2_2), 
+modelsummary(list(m2_0,m2_1), 
           digits=4) 
 
 
 #
 model_data <- bind_rows(
   tidy(m2_0) %>% mutate(Model = "model1"),
-  tidy(m2_1) %>% mutate(Model = "model2"),
-  tidy(m2_2) %>% mutate(Model = "model3")) %>%
+  tidy(m2_1) %>% mutate(Model = "model2")) %>%
   filter(term != "(Intercept)")  # Intercept ausblenden
 
 coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), color = Model)) +
@@ -103,11 +94,16 @@ coef_m2 <- ggplot(model_data, aes(x = estimate, y = reorder(term, estimate), col
                  height = 0.2, position = position_dodge(width = 0.5)) +
   geom_vline(xintercept= 0, linetype = "dotted", color = "dark grey")+
   scale_y_discrete(labels = c("mean_FLAT_size_2022" = "flatsize 22 (mean)",
+                              "change_pc_bs_mean" = "Built-up area change in % ('05–'20)",
                               "POP_60_plus_._2022"= "Old population",
                               "pop20_MEAN" = "pop_20 (mean)",
                               "Rent_m2_EUR_2022" = "Rent/m2 22 (€)",
                               "st_einnkr" = "tax/capita 22 (€)",
-                              "vac_MEAN_muni_2022" = "vacancy rate/municipality (mean)"))+
+                              "vac_MEAN_muni_2022" = "vacancy rate/municipality (mean)",
+                              "cluster1" = "Cluster 1",
+                              "cluster2" = "Cluster 2",
+                              "cluster3" = "Cluster 3",
+                              "cluster4" = "Cluster 4"))+
   labs(title = "Coefficient Plot Regression Analysis", x = "estimates (95% CI)", y = "predictors") +
   theme_minimal()
 ggsave("graph/coef_m2.png", width = 8, height = 6, dpi = 300)
@@ -116,9 +112,8 @@ ggsave("graph/coef_m2.png", width = 8, height = 6, dpi = 300)
 
 
 #Regressionsoutput Word
-model <- list("Only Cluster" = m2_0,
-              "Full model\nwithout clusters" = m2_1,
-              "Full model\nwith cluster" = m2_2)
+model <- list("Only Clusters" = m2_0,
+              "Full model\nwithout clusters" = m2_1)
 
 lab_vars <- c(
   "(Intercept)" = "Intercept",
@@ -127,8 +122,9 @@ lab_vars <- c(
   "vac_MEAN_muni_2022" = "Vacancy rate per district ",
   "Rent_m2_EUR_2022" = "Rent per m² in € ",
   "POP_60_plus_._2022" = "Population age 60+ ",
+  "change_pc_bs_mean" = "Built-up area change\nin % ('05–'20)",
   "st_einnkr" = "Tax revenue per capita in € ",
-  "cluster1" = "Cluster 1",
+  "cluster1" = "Cluster 1: Wealthy,\nyoung, dense urban cores",
   "cluster2" = "Cluster 2: Dense, aging,\ncostly, shrinking housing",
   "cluster3" = "Cluster 3: Growing,\nspacious, rural family areas",
   "cluster4" = "Cluster 4: Wealthy,\nyoung, dense urban cores"
