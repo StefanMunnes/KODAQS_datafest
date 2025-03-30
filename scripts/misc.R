@@ -1,9 +1,25 @@
+# function to top-code income variable
 top_code_income <- function(income_vector, percentile = 0.99) {
   threshold <- quantile(income_vector, probs = percentile, na.rm = TRUE)
   income_vector[income_vector > threshold] <- threshold
   return(income_vector)
 }
 
+
+# list of variables for analysis
+varlist_analysis <- c(
+  "change_pc_bs_mean",
+  "vac_MEAN_muni_2022",
+  "Rent_m2_EUR_2022",
+  "share_larger_HH_2022",
+  "mean_FLAT_size_2022",
+  "st_einnkr",
+  "POP_60_plus_._2022",
+  "pop20_MEAN"
+)
+
+
+# add labels vor variables and clusters
 lab_vars <- c(
   "Haeufigkeitszahl" = "Crime rate per capita",
   "pop20_MEAN" = "Mean population ",
@@ -11,25 +27,35 @@ lab_vars <- c(
   "vac_MEAN_muni_2022" = "Vacancy rate per district ",
   "Rent_m2_EUR_2022" = "Rent per m² in € ",
   "share_larger_HH_2022" = "Share of large households ",
-  "POP_60plus._2022" = "Population age 60+ ",
-  "St_einnkr" = "Tax revenue per capita in € ",
-  "Change_pc_bs_mean" = "Built-up area change in % (2005–2020)"
+  "POP_60_plus_._2022" = "Population age 60+ ",
+  "st_einnkr" = "Tax revenue per capita in € ",
+  "change_pc_bs_mean" = "Built-up area change in % ('05–'20)"
 )
 
-lab_cluster <- c()
-
-
-colors <- sapply(
-  RColorBrewer::brewer.pal(k, "Set1"),
-  function(col) {
-    rgb_val <- col2rgb(col)
-    rgb(
-      rgb_val[1],
-      rgb_val[2],
-      rgb_val[3],
-      maxColorValue = 255,
-      alpha = 0.8 * 255
-    )
-  },
-  USE.NAMES = FALSE
+lab_cluster <- c(
+  "1" = "Poor, aging, vacant, low-density areas",
+  "2" = "Dense, aging, costly, shrinking housing",
+  "3" = "Growing, spacious, rural family areas",
+  "4" = "Wealthy, young, dense urban cores"
 )
+
+
+# define colors for cluster visualization
+clr_cluster <- c(
+  "#A9A9A9",
+  "#1E90FF",
+  "#32CD32",
+  "#FF8C00"
+)
+
+clr_cluster <- c(
+  "#696969",
+  "#4682B4",
+  "#228B22",
+  "#B22222"
+)
+
+# #F4A7B9
+# #A1C6EA
+# #B4E7B0
+# #FDD9A0
