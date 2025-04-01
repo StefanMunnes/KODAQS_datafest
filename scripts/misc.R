@@ -21,7 +21,7 @@ varlist_analysis <- c(
 
 # add labels vor variables and clusters
 lab_vars <- c(
-  "Haeufigkeitszahl" = "Crime rate per 10'000 capita",
+  "haeufigkeitszahl" = "Crime rate per 10'000 capita",
   "pop20_MEAN" = "Population density",
   "mean_FLAT_size_2022" = "Flat size in m²",
   "vac_MEAN_muni_2022" = "Vacancy rate",
