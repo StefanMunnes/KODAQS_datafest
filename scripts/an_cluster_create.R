@@ -1,13 +1,12 @@
 library(dplyr)
 library(cluster)
-library(factoextra)
-
 
 set.seed(161) # For reproducibility
 
+# load function, labels, and colors
 source("scripts/misc.R")
 
-
+# load prepared aggregated municpal data (Kreise and Cities)
 data_kreis_pks_2022 <- read.csv("data/data_kreis_pks_2022.csv")
 
 # scale chosenvariables for cluster analysis

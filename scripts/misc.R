@@ -34,8 +34,8 @@ lab_vars <- c(
 
 lab_cluster <- c(
   "2" = "Poor, aging, vacant, low-density areas",
-  "3" = "Growing, spacious, rural family areas",
-  "4" = "Dense, aging, costly, shrinking housing",
+  "3" = "Dense, aging, costly, shrinking housing",
+  "4" = "Growing, spacious, rural family areas",
   "1" = "Wealthy, young, dense urban cores"
 )
 
@@ -43,8 +43,8 @@ lab_cluster <- c(
 # define colors for cluster visualization
 clr_cluster <- c(
   "#FBCA7B",
-  "#A1C6EA",
   "#B4E7B0",
+  "#A1C6EA",
   "#F4A7B9"
 )
 

@@ -5,7 +5,7 @@ library(gridExtra)
 library(cowplot)
 library(GGally)
 
-
+# load function, labels, and colors
 source("scripts/misc.R")
 
 # load data
@@ -67,14 +67,14 @@ plot_cluster_vars <- data_cluster |>
     columns = 1:(ncol(data_cluster) - 1),
     groupColumn = "cluster",
     scale = "std",
-    alphaLines = 0.25
+    alphaLines = 0.20
   ) +
   geom_hline(yintercept = 0, color = "grey20") +
   ungeviz::geom_hpline(
     data = cluster_means,
     aes(x = variable, y = value, colour = cluster),
-    alpha = 0.9,
-    size = 3,
+    alpha = 0.95,
+    linewidth = 3,
     inherit.aes = FALSE
   ) +
   coord_flip() +
@@ -99,6 +99,7 @@ ggsave(
 
 # ---- 3. Legend ----
 
+# create plot for legend
 legend <- get_legend(
   ggplot(data_cluster, aes(st_einnkr, fill = cluster)) +
     geom_bar() +
@@ -109,9 +110,7 @@ legend <- get_legend(
 ggsave(
   "output/plot_cluster_legend.png",
   legend,
-  width = 12,
-  height = 6,
+  width = 3,
+  height = 1.2,
   dpi = 300
 )
-
-# ---- 4. Combine plots and with legend ----
